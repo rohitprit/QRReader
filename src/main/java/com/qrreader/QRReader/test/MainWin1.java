@@ -60,10 +60,11 @@ public class MainWin1 {
 
     public void setImage() throws IOException{
 //        URL img=MainWin.class.getResource("/img/img.jpg");
-    	String path="E:\\10.png";
-        BufferedImage bimg=ImageIO.read(new File(path));
+    	String path="4.jpeg";
+        BufferedImage bimg=ImageIO.read(new File("E:\\"+path));
         int w=bimg.getWidth();
         int h=bimg.getHeight();
+        System.out.println("path w*h: "+w+"*"+h);
         int count=0;
             for(int i=0;i<4;i++){
                 BufferedImage wim=bimg.getSubimage(i*w/4,0, w/4, h);

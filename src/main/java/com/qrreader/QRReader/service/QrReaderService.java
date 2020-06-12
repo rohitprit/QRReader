@@ -17,6 +17,7 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
+import com.qrreader.QRReader.utils.Constants;
 
 @Service
 public class QrReaderService {
@@ -34,18 +35,36 @@ public class QrReaderService {
         return CompletableFuture.completedFuture(url);
     }
 	
+  /*  public String saveQRCodes(final BufferedImage im,final int thCount) throws Exception {
+        final long start = System.currentTimeMillis();
+        //url="number of pixels,Decoded QRCode"
+        String url=decodeQRCode(im);//"http://www.iitk.ac.in/doaa/component/finder/search?q=cse&t%5B%5D=&Itemid=835";
+        LOGGER.info("Thread: "+Thread.currentThread().getName()+"Elapsed time: {}", (System.currentTimeMillis() - start));
+//        System.out.println("Thread: "+Thread.currentThread().getName()+"Elapsed time: "+(System.currentTimeMillis() - start));
+        return url;
+    }*/
+	
 	// We are looking for black/white/black/white/black modules in
     // 1:1:3:1:1 ratio; this tracks the number of such modules seen so far
-	private static String decodeQRCode(BufferedImage bufferedImage) throws IOException, NotFoundException {
-	    LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
+	private static String decodeQRCode(BufferedImage bufferedImage) throws NotFoundException {
+		int numOfBPixels=0;
+	    try {
+		LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
 	    BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-	    Result result = new MultiFormatReader().decode(bitmap);
-	    result.getBarcodeFormat();
-	    
+	   
 	    BitMatrix image= bitmap.getBlackMatrix();
-	    int numOfBPixels=CountSetBit(image);
-//	    int numOfBPixels1=CountSetBit(extractPureBits(image));
+	    numOfBPixels=CountSetBit(image);
+	    
+	    Result result = new MultiFormatReader().decode(bitmap);
+//	    int numOfBPixels1=CountSetBit(extractPureBits(image)); //For counting exact black pixels in the QRCode
 	    return numOfBPixels+","+result.getText();
+	    }
+	    catch (Exception e) {
+	    	e.printStackTrace();
+	    	LOGGER.error(":decodeQRCode: "+e.getMessage());
+	    	return numOfBPixels+","+Constants.ErrorInDecode;
+			// TODO: handle exception
+		}
 	}
 	
 	private static int CountSetBit(BitMatrix image) {

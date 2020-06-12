@@ -58,6 +58,7 @@ public class QrReaderController {
 			StringBuffer res = new StringBuffer();
 			for (int i = 0; i < si.length; i++) {
 				res.append(qrReaderService.saveQRCodes(si[i], i).get());
+//				res.append(qrReaderService.saveQRCodes(si[i], i));
 				res.append(",");
 			}
 			res.setLength(res.length() - 1);
@@ -71,7 +72,7 @@ public class QrReaderController {
 		} catch (final Exception e) {
 			LOGGER.error(this.getClass().getName() + ":getQrCode");
 //			System.out.println("Error");
-//			e.printStackTrace();
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 

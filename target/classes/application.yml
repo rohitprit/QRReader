@@ -1,0 +1,22 @@
+server:
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+ 
+spring:
+     
+#  mvc:
+#    favicon:
+#      enabled: false  
+      
+  jmx:
+    enabled: false
+    
+  cache:
+    type: simple
+    
+logging:
+  level:
+    org.springframework.web: INFO
+    
